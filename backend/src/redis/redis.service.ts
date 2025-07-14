@@ -67,7 +67,8 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   }
 
   async blockingPopFromList(listKey: string, timeout: number): Promise<[string, string] | null> {
-    return this.client.brPop(listKey, timeout);
+    const result = await this.client.brPop(listKey, timeout);
+    return result ? [result.key, result.element] : null;
   }
 
   // Generate a unique response key

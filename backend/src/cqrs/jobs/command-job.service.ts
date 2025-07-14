@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { RedisService } from '../../redis/redis.service';
-import { Command, CommandType, CommandResponse } from '../../../../../shared/dist/types';
+import { Command, CommandType, CommandResponse } from 'shared';
 
 @Injectable()
 export class CommandJobService implements OnModuleInit {

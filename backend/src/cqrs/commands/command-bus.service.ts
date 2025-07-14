@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { RedisService } from '../../redis/redis.service';
-import { Command, CommandResponse, CommandType } from '../../../../../shared/dist/types';
+import { Command, CommandResponse, CommandType } from 'shared';
 
 @Injectable()
 export class CommandBusService {

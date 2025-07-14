@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBusService } from '../../cqrs/commands/command-bus.service';
 import { QueryBusService } from '../../cqrs/queries/query-bus.service';
-import { CommandType, QueryType, Page } from '../../../../../shared/dist/types';
+import { CommandType, QueryType, Page } from 'shared';
 
 @Injectable()
 export class PagesService {
