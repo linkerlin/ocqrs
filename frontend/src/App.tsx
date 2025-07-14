@@ -32,29 +32,27 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            
-            {/* Posts routes */}
-            <Route path="/posts" element={<PostsList />} />
-            <Route path="/posts/new" element={<PostForm />} />
-            <Route path="/posts/edit/:id" element={<PostForm />} />
-            
-            {/* Pages routes */}
-            <Route path="/pages" element={<PagesList />} />
-            <Route path="/pages/new" element={<PageForm />} />
-            <Route path="/pages/edit/:id" element={<PageForm />} />
-            
-            {/* Users routes */}
-            <Route path="/users" element={<UsersList />} />
-            <Route path="/users/new" element={<UserForm />} />
-            <Route path="/users/edit/:id" element={<UserForm />} />
-            
-            {/* Fallback route */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Layout>
+        <Routes>
+          <Route path="/" element={<Layout><Dashboard /></Layout>} />
+          
+          {/* Posts routes */}
+          <Route path="/posts" element={<Layout><PostsList /></Layout>} />
+          <Route path="/posts/new" element={<Layout><PostForm /></Layout>} />
+          <Route path="/posts/edit/:id" element={<Layout><PostForm /></Layout>} />
+          
+          {/* Pages routes */}
+          <Route path="/pages" element={<Layout><PagesList /></Layout>} />
+          <Route path="/pages/new" element={<Layout><PageForm /></Layout>} />
+          <Route path="/pages/edit/:id" element={<Layout><PageForm /></Layout>} />
+          
+          {/* Users routes */}
+          <Route path="/users" element={<Layout><UsersList /></Layout>} />
+          <Route path="/users/new" element={<Layout><UserForm /></Layout>} />
+          <Route path="/users/edit/:id" element={<Layout><UserForm /></Layout>} />
+          
+          {/* Fallback route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </Router>
     </ThemeProvider>
   );
