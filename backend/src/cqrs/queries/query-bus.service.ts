@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '../../redis/redis.service';
-import { Query, QueryType, QueryResponse } from '../../../../../shared/dist/types';
+import { Query, QueryType, QueryResponse } from 'shared';
 
 @Injectable()
 export class QueryBusService {

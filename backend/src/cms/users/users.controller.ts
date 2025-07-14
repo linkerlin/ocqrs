@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CommandType, QueryType, User as UserModel } from '../../../../../shared/dist/types';
+import { CommandType, QueryType, User as UserModel } from 'shared';
 
 @Controller('users')
 export class UsersController {

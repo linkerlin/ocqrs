@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { PostsService } from './posts.service';
-import { CommandType, QueryType, Post as PostModel } from '../../../../../shared/dist/types';
+import { CommandType, QueryType, Post as PostModel } from 'shared';
 
 @Controller('posts')
 export class PostsController {

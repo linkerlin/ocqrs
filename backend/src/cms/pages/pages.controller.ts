@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { PagesService } from './pages.service';
-import { CommandType, QueryType, Page as PageModel } from '../../../../../shared/dist/types';
+import { CommandType, QueryType, Page as PageModel } from 'shared';
 
 @Controller('pages')
 export class PagesController {

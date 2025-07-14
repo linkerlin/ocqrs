@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBusService } from '../../cqrs/commands/command-bus.service';
 import { QueryBusService } from '../../cqrs/queries/query-bus.service';
-import { CommandType, QueryType, Post } from '../../../../../shared/dist/types';
+import { CommandType, QueryType, Post } from 'shared';
 
 @Injectable()
 export class PostsService {
