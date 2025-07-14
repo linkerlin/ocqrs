@@ -11,8 +11,20 @@ export class CommandJobService implements OnModuleInit {
   constructor(private readonly redisService: RedisService) {}
 
   async onModuleInit() {
-    // Start processing commands
-    this.startProcessing();
+    console.log('Command job service initializing...');
+    
+    // Delay startup to ensure Redis connection is established
+    setTimeout(async () => {
+      // Wait for Redis connection
+      const connected = await this.redisService.waitForConnection(15000);
+      
+      if (connected) {
+        console.log('Redis connected, starting command job service');
+        this.startProcessing();
+      } else {
+        console.error('Redis connection failed, command job service will not start');
+      }
+    }, 2000); // Delay 2 seconds before checking connection
   }
 
   private async startProcessing() {
@@ -33,7 +45,8 @@ export class CommandJobService implements OnModuleInit {
         }
       } catch (error) {
         console.error('Error processing command:', error);
-        // Continue processing even if there's an error
+        // Add a short delay to prevent tight loop in case of persistent errors
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
   }

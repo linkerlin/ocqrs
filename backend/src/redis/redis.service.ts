@@ -27,7 +27,11 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       this.isConnected = false;
     });
 
-    await this.client.connect();
+    try {
+      await this.client.connect();
+    } catch (error) {
+      console.error('Failed to connect to Redis:', error);
+    }
   }
 
   async onModuleDestroy() {
@@ -40,12 +44,44 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     return this.client;
   }
 
+  // Add this method to wait for connection
+  async waitForConnection(timeout = 10000): Promise<boolean> {
+    if (this.isConnected) return true;
+    
+    return new Promise<boolean>((resolve) => {
+      const startTime = Date.now();
+      
+      const checkConnection = () => {
+        if (this.isConnected) {
+          resolve(true);
+          return;
+        }
+        
+        if (Date.now() - startTime > timeout) {
+          console.warn('Redis connection timeout');
+          resolve(false);
+          return;
+        }
+        
+        setTimeout(checkConnection, 100);
+      };
+      
+      checkConnection();
+    });
+  }
+
   // Cache operations
   async get(key: string): Promise<string | null> {
+    if (!this.isConnected) {
+      await this.waitForConnection();
+    }
     return this.client.get(key);
   }
 
   async set(key: string, value: string, ttl?: number): Promise<void> {
+    if (!this.isConnected) {
+      await this.waitForConnection();
+    }
     if (ttl) {
       await this.client.set(key, value, { EX: ttl });
     } else {
@@ -54,21 +90,44 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
   }
 
   async del(key: string): Promise<void> {
+    if (!this.isConnected) {
+      await this.waitForConnection();
+    }
     await this.client.del(key);
   }
 
   // List operations for CQRS
   async pushToList(listKey: string, value: string): Promise<number> {
+    if (!this.isConnected) {
+      await this.waitForConnection();
+    }
     return this.client.lPush(listKey, value);
   }
 
   async popFromList(listKey: string): Promise<string | null> {
+    if (!this.isConnected) {
+      await this.waitForConnection();
+    }
     return this.client.rPop(listKey);
   }
 
   async blockingPopFromList(listKey: string, timeout: number): Promise<[string, string] | null> {
-    const result = await this.client.brPop(listKey, timeout);
-    return result ? [result.key, result.element] : null;
+    if (!this.isConnected) {
+      console.log('Redis client not connected yet, waiting...');
+      const connected = await this.waitForConnection(5000);
+      if (!connected) {
+        console.warn('Redis connection failed, returning null');
+        return null;
+      }
+    }
+    
+    try {
+      const result = await this.client.brPop(listKey, timeout);
+      return result ? [result.key, result.element] : null;
+    } catch (error) {
+      console.error('Error in blockingPopFromList:', error);
+      return null;
+    }
   }
 
   // Generate a unique response key
